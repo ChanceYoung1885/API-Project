@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <title>API Project</title>
+</head>
+<body>
+    <div id="Page">
+        <nav>
+            <span id="brand-name">My Cards</span>
+            <a href="/collection">Card Search</a>
+            <a href="/deck.html">Decks</a>
+            <a href="/settings">Settings</a>
+        </nav>
+        <div id="selected-result">
+            <img id="main-image" src="https://backs.scryfall.io/normal/9/8/98784b63-d263-4abc-aabb-a092e6ecc788.jpg?1665006219" alt="current card">
+        </div>
+        <div id="card-input">
+            <label for="card-name">Card Name:</label>
+            <input type="text" name="card-name" id="card-name">
+            <label for="set-code"> Set:</label>
+            <input type="text" name="set-code" id="set-code" maxlength="3">
+            <select name="order" id="order">
+                <option value="name">Name</option>
+                <option value="set">Set</option>
+                <option value="released">Date</option>
+                <option value="rarity">Rarity</option>
+                <option value="color">Color</option>
+                <option value="cmc">Cost</option>
+            </select>
+            <button id="search-button">Search</button>
+        </div>
+        <div id="results">
+
+        </div>
+    </div>
+    <script src="new.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+body {
+    background-color: #23395d;
+    margin: 0;
+}
+
+#Page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav {
+    background-color: #3e424b;
+    color: black;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 100vw;
+}
+
+#brand-name {
+    margin-left: 15px;
+    margin-right: auto;
+}
+
+a{
+    color: inherit;
+    text-decoration: none;
+    margin-right: 15px;
+}
+
+#selected-result {
+    width: 90vw;
+    margin: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+#card-input {
+    margin-bottom: 10px;
+}
+
+#results {
+    width: 90vw;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+#result-item {
+    background-color: white;
+    outline: solid black;
+    width: min-content;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 5px;
+    padding: 5px;
+    font-size: small;
+}
+
+#result-image {
+    margin-top: 15px;
+    margin: 5px;
+    width: 200px;
+}
+
+
+/* Deck page specific */
+
+#deck-input {
+    margin-top: 10px;
+}
