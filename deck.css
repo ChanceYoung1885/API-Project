@@ -29,9 +29,29 @@ a{
     margin-right: 15px;
 }
 
+#page-content{
+    display: flex;
+    width: 100vw;
+    align-items: center;
+}
+
+#deck-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: flex-start;
+    margin: 15px;
+}
+
 #deck-list{
     margin-top: 10px;
     margin-bottom: 10px;
+    height: 75vh;
+    width: 20vw;
+}
+
+#search-button {
+    width: 100%;
 }
 
 #results{
@@ -41,7 +61,7 @@ a{
     flex-direction: row;
 }
 
-#result-item {
+#card {
     background-color: white;
     outline: solid black;
     width: min-content;
@@ -54,8 +74,28 @@ a{
     font-size: small;
 }
 
-#result-image{
+#card-image{
     margin-top: 15px;
     margin: 5px;
     width: 200px;
+}
+
+#commander-card {
+    background-color: white;
+    outline: solid black;
+    width: min-content;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 5px;
+    padding: 5px;
+    font-size: small;
+    order: -1;
+}
+
+#commander-image{
+    margin-top: 15px;
+    margin: 5px;
+    width: 450px;
 }

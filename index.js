@@ -1,66 +1,82 @@
-// const apiEndpoint = "https://api.scryfall.com"
-const search = document.getElementById('search-button')
-const newImage = document.getElementById('result-image')
+const cardList = [];
 
-// function changeImage(newUrl) {
-//     newImage.src = newUrl;
-// }
-
-function changeImage() {
-    let urlString = imageUrl; // Example URL with extra quotation marks
-    urlString = urlString.replace(/"/g, ''); // Removes all instances of the quotation mark
-    newImage.src = urlString;
+onmessage = function(event){
+    const deck = event.data
+    splitDeck(deck);
 }
 
-// Replace 'CardName' with the actual name of the card you're searching for
+function splitDeck(deckList) {
+    // Using regular expression to split the string
+    // The pattern looks for a space followed by a digit and 'x'
+    const regex = / (?=\dx)/;
+    const separatedCards = deckList.split(regex);
+    // console.log(separatedCards)
 
-function newCard() {
-    cardName = (document.getElementById('card-name')).value; 
-    url = `https://api.scryfall.com/cards/search?q=${cardName}`;
+    // Format cards by removing quantity of cards and cmdr tag if necessary
+    const formattedCards = separatedCards.map(element => {
+        const pieces = element.split(' '); // Splits each card element into pieces
+        // console.log(pieces);
+        pieces.shift(); // Remove quantity
+        if(pieces[pieces.length - 1] == '*CMDR*') {
+            pieces.pop(); // If the card is a commander it will remove the commander tag
+        }
+        const joinedParts =  pieces.join(' ');
+        // console.log(joinedParts);
+        const nameAndCode = joinedParts.split('('); // Splitting by '('
+        nameAndCode[1] = nameAndCode[1].slice(0, -1); // Removing the closing ')'
+        return [nameAndCode[0].trim(), nameAndCode[1].trim()];
+    });
+    // console.log(formattedCards);
+
+    // Adding keys to make them easier to refer to
+    const keyedArray = formattedCards.map(subArray => ({
+        name: subArray[0],
+        set: subArray[1]
+    }));
+    // console.log(keyedArray);
+
+    const cardPromises = keyedArray.map(card => fetchCard(card.name, card.set));
+    Promise.all(cardPromises)
+    .then(results => {
+        console.log(cardList);
+        postMessage(cardList);
+    })
 }
 
-// On click function for grabbing an image from a single card
-search.onclick = function() {
-    cardSearch();
-};
-function cardSearch() {
-    newCard();
-    if(!cardName){
-        console.log('sorry no card')
+function fetchCard(cardName, setCode) {
+    if(setCode.match(/:/)) {
+        // console.log(setCode)
+        const specCard = setCode.split(':')
+        // console.log(specCard);
+        // console.log(specCard);
+        specCard.map(setCodes => ({
+            set: setCodes[0],
+            cardNum: setCodes[1]
+        }))
+        // console.log(specCard);
     } else {
-        fetch(url)
-          .then(response => {
+        fetch(`https://api.scryfall.com/cards/named?exact=${encodeURIComponent(cardName)}&set=${encodeURIComponent(setCode)}`)
+        .then(response => {
             if (!response.ok) {
-              throw new Error('Network response was not ok');
+            throw new Error(`Error fetching card: ${cardName} from set: ${setCode}`);
             }
             return response.json();
-          })
-          .then(data => {
-            console.log(data);
-            const stringData = data;
-            const list = JSON.parse(JSON.stringify(stringData.data));
-            console.log(list)
-            // Separating them into individual items
-            list.forEach(element => {
-                if(list.indexOf(element)<20){
-                    // For the first 20 it'll run the code below
-                    // This just console logs the name of the card
-             const name = JSON.parse(JSON.stringify(element.name))
-             console.log(name);   
-                    // Gotta change it to the whole table thing
-                }
-            });
-    
-            
-            // const image = newResults.image_uris;
-            // imageUrl = JSON.stringify(image.normal);
-            // console.log(imageUrl);
-            // changeImage(imageUrl);
-          })
-          .catch(error => {
-            console.error('Fetch error:', error);
-          });
-        
+        })
+        .then(data => {
+            const cardInfo = [];
+            cardInfo.push(data.image_uris.normal)
+            cardInfo.push(data.name);
+            cardInfo.push((data.set).toUpperCase());
+            return cardInfo;
+        })
+        .then(data => {
+            cardList.push(data)
+            console.log(data)
+            return data;
+        })
     }
 }
 
+function displayDeck() {
+
+}
